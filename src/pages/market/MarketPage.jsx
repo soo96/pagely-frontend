@@ -42,7 +42,16 @@ export function MarketPage() {
 
   return (
     <div style={{ maxWidth: '800px', margin: '0 auto', padding: '32px 16px' }}>
-      <h1 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '8px' }}>중고 마켓</h1>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+        <h1 style={{ fontSize: '24px', fontWeight: 'bold' }}>중고 마켓</h1>
+        <button
+          className="button"
+          style={{ margin: 0, padding: '8px 16px', boxSizing: 'border-box' }}
+          onClick={() => navigate('/sale-posts/new')}
+        >
+          + 판매글 등록
+        </button>
+      </div>
       <p style={{ color: '#8b95a1', fontSize: '14px', marginBottom: '24px' }}>
         판매 중인 도서 목록입니다.
       </p>

@@ -14,6 +14,7 @@ import { OrderListPage } from './pages/order/OrderListPage';
 import { OrderDetailPage } from './pages/order/OrderDetailPage';
 import { MarketPage } from './pages/market/MarketPage';
 import { SalePostDetailPage } from './pages/market/SalePostDetailPage';
+import { CreateSalePostPage } from './pages/market/CreateSalePostPage';
 
 function Private({ children }) {
   return <PrivateRoute>{children}</PrivateRoute>;
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <Private><MarketPage /></Private>,
+  },
+  {
+    path: 'sale-posts/new',
+    element: <Private><CreateSalePostPage /></Private>,
   },
   {
     path: 'sale-posts/:salePostId',

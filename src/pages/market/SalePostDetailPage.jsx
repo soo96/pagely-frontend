@@ -50,7 +50,7 @@ export function SalePostDetailPage() {
         localStorage.setItem('orderIds', JSON.stringify([...saved, order.id]));
       }
 
-      navigate('/widget/checkout', { state: { orderId: order.id, price: order.price } });
+      navigate('/widget/checkout', { state: { orderId: order.id, price: order.price, orderName: post.title } });
     } catch (e) {
       setBuyError(e.message);
     } finally {
@@ -156,7 +156,7 @@ export function SalePostDetailPage() {
           className="button"
           disabled={!canBuy || buying}
           onClick={handleBuy}
-          style={{ width: '100%', fontSize: '16px', padding: '14px', opacity: canBuy ? 1 : 0.5, cursor: canBuy ? 'pointer' : 'not-allowed' }}
+          style={{ width: '100%', fontSize: '16px', padding: '14px', margin: 0, boxSizing: 'border-box', opacity: canBuy ? 1 : 0.5, cursor: canBuy ? 'pointer' : 'not-allowed' }}
         >
           {buying ? '주문 생성 중...' : canBuy ? '구매하기' : '구매 불가'}
         </button>
