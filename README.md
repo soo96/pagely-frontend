@@ -5,7 +5,7 @@
 ## 실행 환경
 
 - Node.js 18+
-- 백엔드 서버 (gateway-server, user-service, market-service, payment-service) 실행 중
+- 백엔드 서버 (gateway-server, user-service, market-service, payment-service, book-service) 실행 중
 
 ## 시작하기
 
@@ -29,6 +29,7 @@ Vite 개발 서버가 `/api` 경로를 `http://localhost:8080` (gateway-server)�
 | user-service | 19001 |
 | market-service | 19021 |
 | payment-service | 19041 |
+| book-service | 19051 |
 
 ## 주요 화면
 
@@ -37,11 +38,12 @@ Vite 개발 서버가 `/api` 경로를 `http://localhost:8080` (gateway-server)�
 | `/login` | 로그인 |
 | `/signup` | 회원가입 |
 | `/` | 판매글 목록 (AVAILABLE 상태만 표시) |
+| `/sale-posts/new` | 판매글 등록 (도서 검색 + 폼 유효성 검사) |
 | `/sale-posts/:id` | 판매글 상세 + 구매하기 |
-| `/widget/checkout` | TossPayments 결제 위젯 |
-| `/widget/success` | 결제 확인 (payment-service confirm 호출) |
+| `/widget/checkout` | TossPayments 결제 위젯 (주문명·금액 표시) |
+| `/widget/success` | 결제 확인 (payment-service confirm 호출, 로딩/성공/실패 처리) |
 | `/orders` | 내 주문 목록 |
-| `/orders/:orderId` | 주문 상세 |
+| `/orders/:orderId` | 주문 상세 (결제하기·취소·구매확정) |
 
 ## 결제 흐름
 
@@ -50,3 +52,10 @@ Vite 개발 서버가 `/api` 경로를 `http://localhost:8080` (gateway-server)�
 3. TossPayments 결제 위젯에서 결제 진행
 4. 결제 성공 시 `/widget/success`로 리다이렉트
 5. `POST /api/v1/payments/confirm` 호출 → 결제 확정
+6. 확정 성공 시 결제 완료 화면, 실패 시 실패 화면 표시
+
+## 인증
+
+- 로그인 후 JWT를 localStorage에 저장
+- 모든 API 요청에 `Authorization: Bearer <token>` 및 `X-User-Id` 헤더 자동 첨부 (`src/api/client.js`)
+- 미인증 상태로 보호된 경로 접근 시 `/login`으로 리다이렉트
