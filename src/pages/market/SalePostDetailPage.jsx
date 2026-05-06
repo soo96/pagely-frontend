@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { apiFetch } from '../../api/client';
+import { useAuth } from '../../auth/AuthContext';
 
 const STATUS_LABEL = {
   AVAILABLE: '판매중',
@@ -11,6 +12,7 @@ const STATUS_LABEL = {
 export function SalePostDetailPage() {
   const { salePostId } = useParams();
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -77,7 +79,8 @@ export function SalePostDetailPage() {
     );
   }
 
-  const canBuy = post.status === 'AVAILABLE';
+  const isMine = user?.id && post.sellerId && user.id === post.sellerId;
+  const canBuy = post.status === 'AVAILABLE' && !isMine;
 
   return (
     <div style={{ maxWidth: '700px', margin: '0 auto', padding: '32px 16px' }}>
@@ -152,14 +155,18 @@ export function SalePostDetailPage() {
           <p style={{ color: '#ef4444', fontSize: '14px', marginBottom: '12px' }}>{buyError}</p>
         )}
 
-        <button
-          className="button"
-          disabled={!canBuy || buying}
-          onClick={handleBuy}
-          style={{ width: '100%', fontSize: '16px', padding: '14px', margin: 0, boxSizing: 'border-box', opacity: canBuy ? 1 : 0.5, cursor: canBuy ? 'pointer' : 'not-allowed' }}
-        >
-          {buying ? '주문 생성 중...' : canBuy ? '구매하기' : '구매 불가'}
-        </button>
+        {isMine ? (
+          <p style={{ textAlign: 'center', color: '#8b95a1', fontSize: '14px', padding: '14px 0' }}>내가 등록한 판매글입니다.</p>
+        ) : (
+          <button
+            className="button"
+            disabled={!canBuy || buying}
+            onClick={handleBuy}
+            style={{ width: '100%', fontSize: '16px', padding: '14px', margin: 0, boxSizing: 'border-box', opacity: canBuy ? 1 : 0.5, cursor: canBuy ? 'pointer' : 'not-allowed' }}
+          >
+            {buying ? '주문 생성 중...' : canBuy ? '구매하기' : '구매 불가'}
+          </button>
+        )}
       </div>
     </div>
   );

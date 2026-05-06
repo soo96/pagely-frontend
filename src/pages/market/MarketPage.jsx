@@ -30,7 +30,6 @@ export function MarketPage() {
         return r.json();
       })
       .then((res) => {
-        // ApiResponse: { success, data: { content, totalPages, ... } }
         const pageData = res.data ?? res;
         const all = pageData.content ?? [];
         setPosts(all.filter((p) => p.status === 'AVAILABLE'));
